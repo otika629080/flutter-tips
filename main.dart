@@ -367,7 +367,6 @@
 // //     print('String');
 // // };
 
-
 // // for-in文での分解宣言
 // // final sweets = [
 // //   (name: 'cake', price: 300),
@@ -390,7 +389,6 @@
 // // for (var MapEntry(key: key, value: value) in map.entries) {
 // //   print('code: $key, $value');
 // // }
-
 
 // // キャスト
 // // キャストに失敗すると実行時エラー
@@ -519,9 +517,9 @@
 /// 引数の値を倍にして返す
 /// この関数は、引数の値を2倍にして返す関数です
 /// 引数を半分にする仮数を返す関数として[half]関数があります
-int doubleValue(int value) {
-  return value * 2;
-}
+// int doubleValue(int value) {
+//   return value * 2;
+// }
 
 /**
  * 引数の値を半分にして返す
@@ -530,9 +528,9 @@ int doubleValue(int value) {
  * 引数を2倍にする関数として[doubleValue]関数があります
  */
 
-double half(double value) {
-  return value * 2;
-}
+// double half(double value) {
+//   return value * 2;
+// }
 
 // null安全
 // Dartではデフォルトが非null許容型
@@ -579,3 +577,799 @@ double half(double value) {
 // デフォルトがpublicで、_で始めるとprivateとして扱う
 // import 'dart:math';
 // import 'package:path/to/file.dart';
+
+// 省略可能引数
+// void makeColor(int red, int green, int blue, [int? alpha]) {
+
+// }
+
+// // 名前付き引数
+// void makeColor2({int? red, int? green}) {}
+// void makeColor3({{required int red}}){}
+
+// アロー演算子
+// int doubleValue(int x) => x * 2;
+
+// 関数を変数fに代入
+// int doubleValue(int x) {
+//   return x * 2;
+// }
+
+// final int Function(int) f = doubleValue;
+// final result = f(8);
+
+// 関数オブジェクトの型
+// 戻り値の型 Function(引数リストの型)
+
+// 匿名関数
+// final int Function(int) f = (x) {
+//   return x * 2;
+// };
+
+// Dartの匿名関数はクロージャの性質を持つ
+// 以下の関数はmultiple関数で、引数をキャプチャしたクロージャを生成する
+// Function multiple(int i) {
+//   return (x) => x * i;
+// }
+
+// final f1 = multiple(3);
+// final f2 = multiple(7);
+
+// Dartのすべてのオブジェクトはクラスのインスタンスであり、
+// null以外のすべてのクラスはObjectクラスのサブクラス
+// コンストラクタの引数
+// class Point {
+//   Point(int xPosition, int yPosition) : x = xPosition, yPosition;
+
+//   int x;
+//   int y;
+// }
+
+// class Point {
+//   Point(this.x, this.y);
+
+//   int x;
+//   int y;
+// }
+
+// コンストラクタに本体を持たせることも可能ですが、
+// 本体が実行される前に非null許容型のクラス変数は初期化済みである必要があります。
+// 下記のPointクラスではコンパイルエラーになります。
+// class Point {
+//   Point(int xPosition, int yPosition) {
+//     x = xPosition;
+//     y = yPosition;
+//   }
+
+//   int x;
+//   int y;
+// }
+
+// 初期化リストでパラメーターのアサーションを記述することができる
+// class Point {
+//   Point(this.x, this.y) : assert(x >= 0), assert(y >= 0);
+//   final int x;
+//   final int y;
+// }
+
+// // ゲッタとセッタ
+// class User {
+//   User(this.id, this._password);
+
+//   final int id;
+//   String _password;
+
+//   String get password => '******';
+
+//   set password(String newPassword) {
+//     _password = hash(newPassword);
+//   }
+// }
+
+// constantコンストラクタ
+// // クラスインスタンスをコンパイル時定数として扱うためにはconstantコンストラクタが必要です。コンストラクタにconstキーワードを付与します。インスタンス変数はすべて再代入不可なfinalである必要があります。
+// class Point {
+//   const Point(this.x, this.y);
+
+//   final int x;
+//   final int y;
+// }
+
+// const point = Point(1, 2);
+
+// constantコンストラクタは常にコンパイル時定数を生成するとは限りません。
+// constantコンストラクタの前にconstキーワードを付与する、
+// またはconst変数に代入した場合に、常に同じインスタンスが使われます。
+// 無駄なインスタンス生成を避けることができるため、Flutterのパフォーマンス向上に役立ちます。
+// class Point {
+//   const Point(this.x, this.y);
+
+//   finai int x;
+//   final int y;
+// }
+// final point1 = const Point(1, 2);
+// const point2 = Point(1, 2);
+// final point3 = Point(1, 2);
+
+// 名前付きコンストラクタ
+// class Point {
+//   const Point(this.x, this.y);
+//   const Point.zero() : x = 0, y = 0;
+//   final int x;
+//   final int y;
+// }
+// また、コンストラクタから自クラスの別のコンストラクタを呼び出すことも可能
+// class Point {
+//   const Point(this.x, this.y);
+//   const Point.zero() : this(0, 0);
+//   final int x;
+//   final int y;
+// }
+
+// factoryコンストラクタ
+// class UserData {
+//   static final Map<int, UserData> _cache = {};
+
+//   factory UserData.fromCache(int userId) {
+//     final cache = _cache[userId];
+//     if (cache != null) {
+//       return cache;
+//     }
+
+//   // キャッシュがなかったので新しいインスタンスを生成して返す
+//   final newInstance = UserData();
+//   _cache[userId] = newInstance;
+//   return newInstance;
+//   }
+// }
+
+// 継承
+// class Animal {
+//   String greet() => 'hello';
+// }
+
+// class Dog extends Animal {
+//   String sayHello() => super.greet();
+// }
+
+// スーパークラスのメソッドをオーバーライドする際は、
+// @overrideアノテーションを付与することが推奨されている
+
+// class Animal {
+//   String greet() => 'hello';
+// }
+
+// class Dog extends Animal {
+//   @override
+//   String greet() => 'borrow';
+// }
+
+// メソッドのオーバーライドにはいくつかの条件があります
+// ・戻り値の型がスーパークラスのメソッドの戻り値の型と同じ、またはそのサブタイプである
+// ・引数の型がスーパークラスのメソッドの引数の型と同じ、またはそのスーパークラスである
+// ・位置パラメーターの数が同じである
+// ・ジェネリックメソッドを非ジェネリックメソッドでオーバーライドできない、また非ジェネリックメソッドをジェネリックメソッドでオーバーライドできない
+
+// また、戻り値の型が非null許容型のメソッドを非null許容型のメソッドでオーバーライドすることもできる
+// class Animal {
+//   String? greet() => null;
+// }
+
+// class Dog extends Animal {
+//   @override
+//   String greet() => 'borrow';
+// }
+
+// スーパークラスのコンストラクタ
+// class Animal {
+//   Animal(this.name);
+//   final String name;
+// }
+
+// class Dog extends Animal {
+//   Dog(String name): super(name);
+// }
+
+// class Animal {
+//   Animal(this.name);
+//   final String name;
+// }
+
+// class Dog extends Animal {
+//   Dog(super.name);
+// }
+
+// 暗黙のインターフェース
+// Dartではすべてのクラスは暗黙的にインターフェースが定義されている
+// そのクラスのすべての関数とインスタンスメンバを持ったインターフェース
+// implementsキーワードに続けてインターフェースとして実装する型名を記述します。
+// class Animal {
+//   String greet() => 'hello';
+// }
+
+// class Dog implements Animal {
+//   @override
+//   String greet() => 'borrow';
+// }
+
+// すべてのインスタンスメンバ、メソッドをオーバーライドしなければならない点が、extendsキーワードで継承する時の違い
+
+// extension <拡張名> on <拡張対象の型> {}
+// extension SwapList<T> on List<T> {
+//   void swap(int index1, int index2) {
+//     final tmp = this[index1];
+//     this[index1] = this[index2];
+//     this[index2] = tmp;
+//   }
+// }
+
+// final list = [1, 2, 3];
+// list.swap(0, 2);
+
+// extension SwapList<T> on List<T> {
+//   static bool noNeedToSwap(List<T> list) {
+//     return list.isEmpty;
+//   }
+
+//   void swap(int index1, int index2) {
+//     if (noNeedToSwap(this)) {
+//       return;
+//     }
+
+//     final tmp = this[index1];
+//     this[index1] = this[index2];
+//     this[index2] = tmp;
+//   }
+// }
+
+// Dartは多重継承を許可していませんが、それに似た言語使用としてmixin(ミックスイン)があります。withキーワードに続けてミックスイン名を記述します。
+// mixin Horse {
+//   void run() {
+//     print('run');
+//   }
+// }
+
+// mixin Bird {
+//   void fly() {
+//     print('fly');
+//   }
+// }
+
+// class Pegasus with Bird, Horse {
+
+// }
+
+// final pegasus = Pegasus();
+// pegasus.run();
+// pegasus.fly();
+
+// クラスとの違いは、
+// ・インスタンス化できないこと
+// ・extendsキーワードを使って他のクラスから継承できないこと
+// ・コンストラクタを宣言できないこと
+
+// onキーワードでミックスインを宣言する際に使用するクラスを制限する
+// class Animal {
+//   String greet() => 'hello';
+// }
+
+// onキーワードで使用可能なクラスをAnimalに制限
+// mixin Horse on Animal {
+//   void run() {
+//     greet();
+//     print('run');
+//   }
+// }
+
+// mixin Bird on Animal {
+//   void fly() {
+//     greet();
+//     print('fly');
+//   }
+// }
+
+// class Pegasus extends Animal with Bird, Horse {
+
+// }
+
+// 列挙型
+// enum Shape {
+//   circle, triangle, square
+// }
+
+// フィールドやメソッド、constantコンストラクタを持った高機能なEnumも宣言できる。通常のクラスに似た構文ですが、いくつかの条件がある
+
+// 1つ以上のインスタンス全てが冒頭で宣言されていなくてはならない
+// インスタンス変数はfinalでなければならない
+// コンストラクタをはconstantコンストラクタまたはfactoryコンストラクタが宣言可能
+// 他のクラスを宣言することはできない
+// index, hashCode, ==演算子をオーバーライドすることはできない
+// valuesという名前のメンバを宣言することができない
+
+// フィールドやfactoryコンストラクタを持ったEnum
+// enum Shape {
+//   circle(corner: 0),
+//   triangle(corner: 3),
+//   square(corner: 4);
+
+//   final int corner;
+
+//   const Shape({
+//     required this.corner,
+//   })
+
+//   factory Shape.ellipse() {
+//     return circle;
+//   }
+// }
+
+// final ellipse = Shape.ellipse();
+// final myShape = Shape.circle;
+// assert(myShape == Shape.circle);
+
+// 各列挙子には宣言された順にindexが振られ、ゲッタから取得できる。
+// また、列挙子の名前をString型で取得できるnameプロパティも生成される。
+// final myShape = Shape.index;
+// print(myShape.index);
+// print(myShape.name);
+// Shape.values.forEach((shape) {
+//   print(shape.name);
+// });
+
+// クラス修飾子
+// ・タイプ1
+// インスタンス化、extendsキーワードによる継承、implementsキーワードによる実装、これらに制限を与える
+// ・タイプ2
+// タイプ1以外の効果を持つ修飾子(タイプ1の効果を併せ持つ場合もある)
+
+// インスタンス化：X
+// extendsキーワードによる継承：〇
+// implementsキーワードによる実装：〇
+// abstract class Animal {
+//   String greet();
+// }
+
+// class Dog extends Animal {
+//   @override
+//   String greet() => 'borrow';
+// }
+
+// インスタンス化：〇
+// extendsキーワードによる継承：〇
+// implementsキーワードによる実装：X
+// base class Animal {
+//   String greet() {
+//     return 'Hello';
+//   }
+// }
+
+// base class Dog extends Animal {
+
+// }
+
+// final Animal = Animal();
+// final dog = Dog();
+
+// implementsキーワードを使ったクラスの実装が自身のライブラリ内に限定されるため、プライベートメソッドも含めて実装を強制することになります。
+// base修飾子を使う目的はプライベートメソッドまで含めて全体の整合性を保つことにあります。そのため、base修飾子を使って宣言されたクラスはライブラリ外でもbase修飾子か、同じように実装を制限するクラス修飾子を付与しなければならない
+// base class Animal {
+//   void _sleep() {
+//     print('sleep');
+//   }
+
+//   String greet() {
+//     return 'hello';
+//   }
+// }
+
+// base class Cat implements Animal {
+//   @override
+//   void _sleep() {
+
+//   }
+
+//   @override
+//   String greet() {
+//     return 'bowwow';
+//   }
+// }
+
+// インスタンス化：〇
+// extendsキーワードによる継承：X
+// implementsキーワードによる実装：〇
+// interface class Animal {
+//   String greet() {
+//     return 'hello';
+//   }
+// }
+
+// class Cat implements Animal {
+//   @override
+//   String greet() => 'new';
+// }
+
+// final animal = Animal();
+// final dog = Dog();
+
+// インスタンス化：〇
+// extendsキーワードによる継承：X
+// implementsキーワードによる実装：X
+// final class Animal {
+//   String greet() {
+//     return 'hello';
+//   }
+// }
+
+// final animal = Animal();
+
+// mixin
+// mixin修飾子を使って宣言されたクラスはミックスインのように扱うことが可能でありながら、クラスなのでインスタンス化することができる。ただし、ミックスインと同様にextendsは使えずコンストラクタも宣言できません
+// mixin class Horse {
+
+// }
+
+// mixin Bird {}
+
+// class Pegasus with Bird, Horse {}
+
+// final horse = Horse();
+
+// seald修飾子を使うとサブタイプをEnumのように扱うことができます。
+// seald修飾子を使って宣言されたクラスは、自身が宣言されたライブラリ以外ではすべてのサブタイプ化を禁止します。
+// この点はfinalと共通していますが、さらにクラス自身が暗黙的にabstractクラスとして扱われます。
+
+// seald class Shape {
+//   abstract int corner;
+// }
+
+// class Rectangle extends Shape {
+//   @override
+//   int corner = 4;
+// }
+
+// class Triangle extends Shape {
+//   @override
+//   int corner = 3;
+// }
+
+// class Circle extends Shape {
+//   @override
+//   int corner = 0;
+// }
+
+// switch文ですべてのサブタイプが網羅されていなければ、
+// コンパイラが警告を出します。
+
+// final Shape shape = getShape();
+
+// switch (shape) {
+//   case Rectangle():
+//     print('Rectangle');
+//   case Triangle():
+//     print('Triangle');
+//   case Circle():
+//     print('Circle');
+// }
+
+// Dartには非同期処理の結果を取り扱うFuture型があります。
+// import 'dart:io';
+
+// void main() {
+//   Future<String> content = File('file.txt').readAsString();
+//   content.then((content) {
+//     print(content);
+//   });
+// }
+
+// readAsStringメソッドは非同期にファイルの内容を読み取り、文字列として返します。戻り値の型はFuture<String>型です。Futureのthenメソッドには処理が完了したときに呼び出されるコールバックを渡します。
+// Futureクラスはasync、awaitキーワードと組み合わせることで、同期的なコードのように記述できる
+// import 'dart:io';
+
+// Future<void> main() async {
+//   String content = await File('file.txt').readAsString();
+//   print(content);
+// }
+
+// readAsStringメソッドの呼び出しにawaitキーワードを付与しました。これにより、readAsStringが終了するまで待機します。また、戻り値のFuture<String>型をString型に自動的に変換します。コールバックのネストが減り、コードが簡潔になります。
+// 重要なポイントとしてawaitキーワードはasyncキーワードを付与したメソッド内でしか使えません。また、asyncキーワードを付与したメソッドの戻り値は暗黙的にFutureクラスでラップされます。main()の本体にasyncキーワードを付与し、戻り値はFuture<void>に変更しています。
+
+// エラーハンドリング
+// Future<String> fetchUserName() {
+//   var str = Future.delayed(
+//     const Duration(seconds: 1),
+//     () => throw 'User not found.'
+//   );
+//   return str;
+// }
+
+// fetchUserName().then((name) {
+//   print('User name is $name');
+// }).catchError((e) {
+//   print(e);
+// });
+
+// async-awaitで実行した非同期処理はtry-catch構文で例外を補足する
+// Future<String> fetchUserName() {
+//   var str = Future.delayed(
+//     const Duration(seconds: 1),
+//     () => throw 'User not found'
+//   );
+//   return str;
+// }
+
+// try {
+//   final name = await fetchUserName();
+//   print('User name = $name');
+// } catch (e) {
+//   print(e);
+// }
+
+// 例外発生時に返す代替の値がある場合はthenメソッドの引数onErrorで処理する方法があります
+// Future<String> fetchUserName() {
+//   var str = Future.delayed(
+//     const Duration(seconds: 1),
+//     () => throw 'User not found.'
+//   );
+//   return str;
+// }
+
+// final result = await fetchUserName().then((name) {
+//   return 'User name is $name';
+// },
+// onError: (e, st) {
+//   return 'Unknown user';
+// },
+// );
+
+// Stream型　非同期に連続した値を扱う
+// import 'dart:io';
+
+// void main() {
+//   final file = File('file.txt');
+//   final Stream<List<int>> stream = file.openRead();
+//   stream.listen((data) {
+//     print('data: ${data.length} bytes');
+//   });
+// }
+
+// Streamはlistenメソッドで購読し、データが通知された時に呼び出されるコールバックを登録する
+// Futureクラスと同様にasyncとawait forキーワードと組み合わせることで、同期的なコードのように記述できる
+
+// import 'dart:io';
+
+// Future<void> main() async {
+//   final file = File('file.txt');
+//   final Stream<List<int>> stream = file.openRead();
+//   await for (final data in stream) {
+//     print('data: ${data.length} bytes');
+//   };
+// }
+
+// Streamの購読をキャンセル、一時停止する
+// listenメソッドの戻り値はStreamSubscription型です。cancelメソッドで購読をキャンセルできます
+
+// import 'dart:io';
+
+// void main() async {
+//   final file = File('file.txt');
+//   final subscription = file.openRead().listen((data) {
+//     print('data: ${data.length} bytes');
+//   });
+
+//   await Future.delayed(const Duration(seconds: 1));
+//   subscription.pause(); // 購読を一時停止
+//   await Future.delayed(const Duration(seconds: 4));
+//   subscription.resume(); // 購読を再開
+// }
+
+// Stream型を生成する関数
+// Stream型を返す関数を実装するにはasyncキーワードを使います。関数が呼び出されるとStreamが生成され、Streamが購読されると関数の本体が実行されます
+// import 'dart:io';
+
+// Stream<String> languages() async* {
+//   await Future.delayed(const Duration(seconds: 1));
+//   yield 'Dart';
+//   await Future.delayed(const Duration(seconds: 1));
+//   yield 'Kotlin';
+//   await Future.delayed(const Duration(seconds: 1));
+//   yield 'Swift';
+//   await Future.delayed(const Duration(seconds: 1));
+//   yield* Stream.fromIterable(['Javascript', 'C++', 'Go']);
+// }
+
+// String型のStreamを生成する関数の例です。yieldに続いてStringを記述すると、その値が戻り値のStreamに通知されます。yield*に続いてStreamを記述すると、そのStreamの値が戻り値のStreamに通知されます。購読がキャンセルされた際は、次のyield文が実行されると関数の実行が中断されます。
+
+// Streramの終わり
+// Streamの終了時に処理を実行するにはlitenメソッドのonDoneにコールバックを渡します。
+// Stream<String> languages() async* {
+//   await Future.delayed(const Duration(seconds: 1));
+//   yield 'Dart';
+//   await Future.delayed(const Duration(seconds: 1));
+//   yield 'Kotlin';
+//   await Future.delayed(const Duration(seconds: 1));
+//   yield 'Swift';
+//   await Future.delayed(const Duration(seconds: 1));
+//   yield* Stream.fromIterable(['Javascript', 'C++', 'Go']);
+// }
+
+// void main() async {
+//   languages().listen((language) {
+//     print(language);
+//   }, onDone: () {
+//     print('Done');
+//   });
+// }
+
+// Future<void> main() async {
+//   await for (final language in languages()) {
+//     print(language);
+//   }
+//   print('Done');
+// }
+
+// Streamは購読をキャンセルしない限り終了しない特性を持ったものもあり得ます。たとえば、Stream.periodicコンストラクタから得られるStreamは一定の間隔で繰り返し値を通知するStreamを生成します。このような終了しないStreamでasync - await forを用いると以降の処理が実行されないので注意が必要です。
+// Future<void> main() async {
+//   await for (final count in Stream<int>.periodic(const Duration(seconds: 1), (i) => {
+//     print(count);
+//   }
+//   print('Done');
+//   ))
+// }
+
+// エラーハンドリング
+// Streamの例外を処理するにはlistenメソッドのonErrorにコールバックを渡します
+// Stream<String> languages() async* {
+//   await Future.delayed(const Duration(seconds: 1));
+//   yield 'Dart';
+//   await Future.delayed(const Duration(seconds: 1));
+//   throw Exception('Some eroor');
+// }
+
+// void main() {
+//   languages().listen((language) {
+//     print(language);
+//   }, onError: (e) {
+//     print(e);
+//   });
+// }
+
+// Stream<String> languages() async* {
+//   await Future.delayed(const Duration(seconds: 1));
+//   yield 'Dart';
+//   await Future.delayed(const Duration(seconds: 1));
+//   throw Exception('Some Error');
+// }
+
+// Future<void> main() async {
+//   try {
+//     await for (final language in languages()) {
+//       print(language);
+//     }
+//   } catch (e) {
+//     print(e);
+//   }
+// }
+
+// async*関数よりも簡単にStreamを生成する方法としてStreamControllerクラスがあります
+
+// import 'dart:async';
+
+// class Counter {
+//   int _count = 0;
+//   StreamController<int> _controller = StreamController<int>();
+
+//   Stream<int> get stream => _controller.stream;
+
+//   void increment() {
+//     _count++;
+//     _controller.add(_count);
+//   }
+// }
+
+// Future<void> main() async {
+//   final counter = Counter();
+//   counter.increment();
+//   counter.increment();
+
+//   counter.stream.listen((i) {
+//     print('count: $i');
+//   });
+
+//   counter.increment();
+// }
+
+// Counterクラスは内部にStreamControllerを持ち、incrementメソッドが呼び出されるとStreamControllerに値を送信します。StreamControllerへの値の送信はaddメソッドで行います。async*関数では関数内でyieldを使ってイベントを送信しましたが、StreamControllerでは外部からイベントを送信できるため、より柔軟にStreamを扱うことができます。
+// このほか、例外を送信するaddErrorメソッドや、購読されているかどうかを判定するhasListernerプロパティなどがあります。
+// async*は購読されるまで関数の本体が実行されません。しかし、StreamControllerは購読されていなくてもaddメソッドで値を送信することができ、その値はバッファリングされ購読されたとき一斉に通知されます。
+// 購読の一時停止も同様にバッファリングされます。
+// そのため、用途によりメモリを消費する可能性があるので注意が必要です。
+
+// ブロードキャスト
+// 1つのStremに対して複数回購読すると例外が発生します。複数の購読者へイベントを通知するには、asBroadcastStremメソッドを使います。
+
+// import 'dart:async';
+
+// Stream<String> languages() async* {
+//   await Future.delayed(const Duration(milliseconds: 500));
+//   yield 'Dart';
+//   await Future.delayed(const Duration(milliseconds: 500));
+//   yield 'Kotlin';
+//   await Future.delayed(const Duration(microseconds: 500));
+//   yield* Stream.fromIterable(['JavaScript', 'C++', 'Go']);
+// }
+
+// Future<void> main() async {
+//   final broadcastStream = languages().asBroadcastStream();
+//   await Future.delayed(const Duration(milliseconds: 1000));
+
+//   broadcastStream.listen((i) {
+//     print('listener 1:  $i');
+//   });
+
+//   await Future.delayed(const Duration(milliseconds: 1100));
+
+//   broadcastStream.listen((i) {
+//     print('listerner 2: $i');
+//   });
+// }
+
+// Streamを変更する
+// ・Streamの値を変換するmap
+// ・Streamの値をフィルタするwhere
+// ・Streamの値の最大値を制限するtake
+// import 'dart:io';
+
+// Stream<int> numberStream() {
+//   return Stream.fromIterable(List.generate(10, (index) => index));
+
+//   void main() {
+//     numberStream().where((num) => num % 2 == 0)
+//     .map((num) => num * 2)
+//     .take(3)
+//     .listen((num) {
+//       print(num);
+//     });
+//   }
+// }
+
+// Zone - 非同期処理のコンテキスト管理
+// DartにはZoneという非同期処理のコンテキストを管理する仕組みがあります。
+// その機能の1つに非同期処理で補足されなかった例外のハンドリングがあります。
+// import 'dart:async';
+
+// Future<String> fetchUserName() {
+//   var str = Future.delayed(const Duration(seconds: 1), () => throw 'User not found.');
+//   return str;
+// }
+
+// void main() {
+//   fetchUserName().then((data) {
+//     print(data);
+//   });
+// }
+
+// Futureへ例外発生時のコールバックを登録していません。
+// 実行するとプログラムが強制終了します。
+// 続いて、Zoneを使って例外をハンドリングする例です。
+// import 'dart:async';
+
+// Future<String> fetchUserName() {
+//   var str = Future.delayed(const Duration(seconds: 1), () => throw 'User not found.');
+//   return str;
+// }
+
+// void main() {
+//   runZonedGuarded(() {
+//     fetchUserName().then((data) {
+//       print(data);
+//     });
+//   }, (error, stackTrace) {
+//     print('Caught: $error');
+//   });
+// }
+
+// アイソレート
+// スレッドやプロセスのような仕組み
+// ・専用のヒープメモリを持つ
+// ・専用の単一スレッドを持ち、イベントループを実行する
+// ・アイソレート間でメモリの共有はできない
